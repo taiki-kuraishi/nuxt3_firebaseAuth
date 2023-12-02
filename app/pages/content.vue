@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>this is the content page</h1>
+        <h1>content page</h1>
         <p>uid :{{ user?.uid }}</p>
         <p>email : {{ user?.email }}</p>
         <p>displayName : {{ user?.displayName }}</p>
