@@ -8,19 +8,21 @@ import {
 import { useUser } from '../composables/user'
 
 type Auth = {
-    signIn: () => void
-    signOut: () => void
+    signIn: () => Promise<void>
+    signOut: () => Promise<void>
 }
 
 export const useAuth = (): Auth => {
     const { setUser } = useUser()
 
-    const signIn = (): void => {
+    const signIn = async (): Promise<void> => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
+        // const result = await signInWithPopup(auth, provider)
+        // setUser(result.user)
+        await signInWithPopup(auth, provider)
             .then((result: UserCredential) => {
-                setUser(result);
+                setUser(result.user);
             })
             .catch((error) => {
                 console.log(error);
@@ -28,9 +30,9 @@ export const useAuth = (): Auth => {
             });
     };
 
-    const signOut = (): void => {
+    const signOut = async (): Promise<void> => {
         const auth = getAuth();
-        firebaseSignOut(auth)
+        await firebaseSignOut(auth)
             .then(() => {
                 setUser(null);
             })
