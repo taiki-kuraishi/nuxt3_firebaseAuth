@@ -9,4 +9,4 @@ services:
     ports:
       - "3000:3000"
     tty: true
-    # command: sh -c "npm install  && yarn dev"
+    # command: sh -c "npm install  && npm run dev"
