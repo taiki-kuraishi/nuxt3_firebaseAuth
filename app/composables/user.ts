@@ -1,19 +1,20 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue';
+import { type UserCredential } from 'firebase/auth';
 
 type User = {
-    user: any
-    setUser: (newUser: any) => void
-}
+    user: Ref<UserCredential | null>;
+    setUser: (newUser: UserCredential | null) => void;
+};
 
 export const useUser = (): User => {
-    const user = useState('user', () => null)
+    const user = ref<UserCredential | null>(null);
 
-    const setUser = (newUser: any) => {
-        user.value = newUser
-    }
+    const setUser = (newUser: UserCredential | null) => {
+        user.value = newUser;
+    };
 
     return {
         user,
         setUser
-    }
-}
+    };
+};

@@ -1,13 +1,15 @@
 <template>
     <div>
         <h1>this is the content page</h1>
-        <p>{{ user }}</p>
+        <p>uid :{{ user?.uid }}</p>
+        <p>email : {{ user?.email }}</p>
+        <p>displayName : {{ user?.displayName }}</p>
         <button @click="signOut">signOut</button>
     </div>
 </template>
 <script setup lang="ts">
-import { useAuth } from "~/composables/auth";
-import { useUser } from "~/composables/user";
+import { useAuth } from "../composables/auth";
+import { useUser } from "../composables/user";
 
 const { user } = useUser();
 

@@ -1,29 +1,44 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut } from 'firebase/auth'
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut as firebaseSignOut,
+    type UserCredential
+} from 'firebase/auth'
 import { useUser } from '../composables/user'
 
 type Auth = {
-    signIn: () => Promise<void>
-    signOut: () => Promise<void>
+    signIn: () => void
+    signOut: () => void
 }
 
 export const useAuth = (): Auth => {
     const { setUser } = useUser()
 
-    const signIn = async (): Promise<void> => {
+    const signIn = (): void => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        //uuidを取得
-        const uuid = result.user?.uid;
-        console.log(uuid);
-        setUser(uuid);
-    }
+        signInWithPopup(auth, provider)
+            .then((result: UserCredential) => {
+                setUser(result);
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error.message);
+            });
+    };
 
-    const signOut = async (): Promise<void> => {
+    const signOut = (): void => {
         const auth = getAuth();
-        await firebaseSignOut(auth);
-        setUser(null);
-    }
+        firebaseSignOut(auth)
+            .then(() => {
+                setUser(null);
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error.message);
+            });
+    };
 
     return {
         signIn,
