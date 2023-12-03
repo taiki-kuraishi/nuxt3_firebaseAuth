@@ -18,8 +18,6 @@ export const useAuth = (): Auth => {
     const signIn = async (): Promise<void> => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
-        // const result = await signInWithPopup(auth, provider)
-        // setUser(result.user)
         await signInWithPopup(auth, provider)
             .then((result: UserCredential) => {
                 setUser(result.user);
