@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   plugins: [
     'plugins/firebase.client.ts'
   ],
