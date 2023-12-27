@@ -1,9 +1,13 @@
 import {
     getAuth,
+    setPersistence,
+    browserLocalPersistence,
     GoogleAuthProvider,
     signInWithPopup,
+    onAuthStateChanged,
     signOut as firebaseSignOut,
-    type UserCredential
+    type UserCredential,
+    type User as FirebaseUser,
 } from 'firebase/auth'
 import { useUser } from '../composables/user'
 
@@ -15,21 +19,23 @@ type Auth = {
 export const useAuth = (): Auth => {
     const { setUser } = useUser()
 
+    const auth = getAuth();
+
     const signIn = async (): Promise<void> => {
-        const auth = getAuth();
-        const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider)
-            .then((result: UserCredential) => {
-                setUser(result.user);
-            })
-            .catch((error) => {
-                console.log(error);
-                alert(error.message);
-            });
+        await setPersistence(auth, browserLocalPersistence).then(async () => {
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider)
+                .then((result: UserCredential) => {
+                    setUser(result.user);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert(error.message);
+                });
+        });
     };
 
     const signOut = async (): Promise<void> => {
-        const auth = getAuth();
         await firebaseSignOut(auth)
             .then(() => {
                 setUser(null);
@@ -40,8 +46,9 @@ export const useAuth = (): Auth => {
             });
     };
 
+
     return {
         signIn,
-        signOut
+        signOut,
     }
 }

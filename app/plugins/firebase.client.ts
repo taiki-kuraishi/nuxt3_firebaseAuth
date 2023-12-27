@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
+import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { defineNuxtPlugin } from '#app'
 
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin(async () => {
 
     const runtimeConfig = useRuntimeConfig();
 
@@ -14,5 +15,7 @@ export default defineNuxtPlugin(() => {
         appId: runtimeConfig.public.appId as string
     };
 
-    initializeApp(firebaseConfig);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    await setPersistence(auth, browserLocalPersistence);
 });
