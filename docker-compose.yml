@@ -3,6 +3,7 @@ version: '3.9'
 services:
   nuxt:
     container_name: nuxt
+    image: nuxt3-firebaseauth:latest
     build: .
     volumes:
       - ./app:/app:cached
